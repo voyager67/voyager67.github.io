@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harsh Singh | Digital Portfolio</title>
+    <meta
+      name="description"
+      content="Harsh Singh's professional digital presence — modern, futuristic, and thoughtfully crafted."
+    />
+    <style>
+      :root {
+        --bg: #060913;
+        --bg-soft: #0c1428;
+        --text: #f3f7ff;
+        --muted: #9db0d1;
+        --accent: #69f0ff;
+        --accent-2: #9f7bff;
+        --card: rgba(12, 20, 40, 0.62);
+        --border: rgba(255, 255, 255, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 10% 20%, #13203f 0%, var(--bg) 45%),
+          radial-gradient(circle at 90% 10%, #24154a 0%, transparent 35%),
+          var(--bg);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .noise,
+      .glow {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .noise {
+        background-image: radial-gradient(rgba(255, 255, 255, 0.04) 0.7px, transparent 0.7px);
+        background-size: 3px 3px;
+        opacity: 0.2;
+      }
+
+      .glow {
+        filter: blur(80px);
+        opacity: 0.45;
+      }
+
+      .glow::before,
+      .glow::after {
+        content: "";
+        position: absolute;
+        width: 360px;
+        height: 360px;
+        border-radius: 50%;
+      }
+
+      .glow::before {
+        background: #3a5fff;
+        top: -80px;
+        left: -80px;
+      }
+
+      .glow::after {
+        background: #8f4fff;
+        right: -60px;
+        bottom: -100px;
+      }
+
+      canvas#stars {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .container {
+        width: min(1100px, 92%);
+        margin: 0 auto;
+      }
+
+      header {
+        padding: 28px 0;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .pill {
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 8px 14px;
+        border-radius: 999px;
+        backdrop-filter: blur(10px);
+        background: rgba(7, 11, 24, 0.5);
+      }
+
+      main {
+        padding: 36px 0 72px;
+      }
+
+      .hero {
+        background: linear-gradient(120deg, rgba(105, 240, 255, 0.14), rgba(159, 123, 255, 0.08));
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: clamp(28px, 5vw, 58px);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.82rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 6vw, 4rem);
+        line-height: 1.08;
+      }
+
+      .subtitle {
+        margin-top: 18px;
+        max-width: 60ch;
+        color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        line-height: 1.7;
+      }
+
+      .cta {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 12px;
+        padding: 12px 18px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .button.primary {
+        color: #061026;
+        background: linear-gradient(120deg, var(--accent), #9ee7ff);
+      }
+
+      .button.secondary {
+        color: var(--text);
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      section {
+        margin-top: 30px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        background: var(--card);
+        backdrop-filter: blur(10px);
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      footer {
+        padding: 20px 0 34px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.92rem;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+    <header class="container">
+      <nav>
+        <div class="brand">harshsinghh.me</div>
+        <div class="pill">Open to collaboration</div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <span class="eyebrow">Professional Digital Presence</span>
+        <h1>Harsh Singh</h1>
+        <p class="subtitle">
+          Building modern products and experiences with a clean, high-impact aesthetic inspired by
+          the future of the web.
+        </p>
+        <div class="cta">
+          <a class="button primary" href="mailto:hello@harshsinghh.me">Connect</a>
+          <a class="button secondary" href="#focus">Explore Focus Areas</a>
+        </div>
+      </section>
+
+      <section id="focus" class="cards">
+        <article class="card">
+          <h3>Strategic Thinking</h3>
+          <p>Turning ideas into clear plans, high-quality execution, and measurable outcomes.</p>
+        </article>
+        <article class="card">
+          <h3>Modern Design</h3>
+          <p>Delivering elegant interfaces that feel refined, contemporary, and user-first.</p>
+        </article>
+        <article class="card">
+          <h3>Future-Ready Tech</h3>
+          <p>Crafting scalable digital systems with performance, security, and longevity in mind.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="container">© <span id="year"></span> Harsh Singh • harshsinghh.me</footer>
+
+    <script>
+      const canvas = document.getElementById("stars");
+      const ctx = canvas.getContext("2d");
+      const stars = [];
+      const count = 140;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function seed() {
+        stars.length = 0;
+        for (let i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.6 + 0.2,
+            v: Math.random() * 0.25 + 0.04,
+            a: Math.random() * 0.7 + 0.3,
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const s of stars) {
+          s.y += s.v;
+          if (s.y > canvas.height + s.r) {
+            s.y = -s.r;
+            s.x = Math.random() * canvas.width;
+          }
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(190, 220, 255, ${s.a})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      seed();
+      draw();
+      window.addEventListener("resize", () => {
+        resize();
+        seed();
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
